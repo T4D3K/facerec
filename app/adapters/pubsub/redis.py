@@ -1,6 +1,7 @@
 import redis.asyncio as redis
 
-from app.business_logic.models import PubSubChannel, PubSubManager
+from app.business_logic.models import PubSubChannel
+from app.business_logic.ports import PubSubManager
 
 
 class RedisPubSubManager(PubSubManager):

@@ -10,17 +10,20 @@ PUB_SUB_TYPE = os.environ.get("PUB_SUB_TYPE", "REDIS")
 
 
 class AppFactory:
-    redis_pubsub = None
+    pubsub = None
 
     @classmethod
     def get_pubsub_manager(cls):
-        if not cls.redis_pubsub:
-            redis_host = os.environ.get("REDIS_HOST")
-            redis_port = os.environ.get("REDIS_PORT", 6379)
-            redis_url = f"redis://{redis_host}:{redis_port}"
-            cls.redis_pubsub = RedisPubSubManager(redis_url)
-            cls.redis_pubsub.connect()
-        return cls.redis_pubsub
+        if PUB_SUB_TYPE == "REDIS":
+            if not cls.pubsub:
+                redis_host = os.environ.get("REDIS_HOST")
+                redis_port = os.environ.get("REDIS_PORT", 6379)
+                redis_url = f"redis://{redis_host}:{redis_port}"
+                cls.pubsub = RedisPubSubManager(redis_url)
+                cls.pubsub.connect()
+            return cls.pubsub
+        raise NotImplemented(f"PUB_SUB_TYPE {PUB_SUB_TYPE} not implemented")
+
 
     @classmethod
     def get_process_image_cmd(cls):

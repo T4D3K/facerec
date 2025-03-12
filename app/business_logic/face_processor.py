@@ -8,6 +8,8 @@ haar_cascade_path = os.path.join(
     os.path.dirname(cv2.__file__), "data", "haarcascade_frontalface_default.xml"
 )
 
+class InvalidFile(Exception):
+    pass
 
 class FaceProcessor:
 
@@ -18,7 +20,7 @@ class FaceProcessor:
         img_array = np.frombuffer(input_image.buffer, np.uint8)
         img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
         if img is None:
-            raise ValueError("Invalid image data: Unable to decode.")
+            raise InvalidFile("Invalid image data: Unable to decode.")
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -31,3 +33,4 @@ class FaceProcessor:
 
         _, buffer = cv2.imencode(".jpg", img)
         output_image.buffer = buffer.tobytes()
+        return len(faces)

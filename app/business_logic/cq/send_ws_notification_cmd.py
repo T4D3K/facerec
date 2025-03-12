@@ -2,7 +2,8 @@ import asyncio
 
 from starlette.websockets import WebSocketDisconnect
 
-from app.business_logic.models import PubSubManager, PubSubChannel
+from app.business_logic.models import PubSubChannel
+from app.business_logic.ports import PubSubManager
 
 
 class SendWsNotificationCmd:

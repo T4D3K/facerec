@@ -26,6 +26,12 @@ compose-up:
 compose-down:
 	$(DC) down -v
 
+redis-up:
+	$(DC) up -d redis
+
+redis-down:
+	$(DC) down -v redis
+
 compose-logs:
 	$(DC) logs -f
 
@@ -34,3 +40,6 @@ format:
 
 lint:
 	$(FLAKE8) app
+
+ws:
+	$(PYTHON) utils/ws_test.py

@@ -4,7 +4,8 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from app.business_logic.models import Image, ImgType, ImageRepo
+from app.business_logic.models import Image, ImgType
+from app.business_logic.ports import ImageRepo
 
 IMAGE_DIR = os.environ.get("IMAGE_DIR", "images")
 Path(IMAGE_DIR).mkdir(parents=True, exist_ok=True)

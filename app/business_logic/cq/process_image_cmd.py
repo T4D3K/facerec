@@ -1,14 +1,14 @@
+import logging
 import os
 import uuid
 
 from app.business_logic.face_processor import FaceProcessor
 from app.business_logic.models import (
-    ImageRepo,
-    PubSubManager,
     Image,
     PubSubChannel,
     ImgType,
 )
+from app.business_logic.ports import PubSubManager, ImageRepo
 
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8081/")
 
@@ -40,11 +40,13 @@ class ProcessImageCmd:
             )
             output_image.url = f"{API_BASE_URL}api/v1/images/{output_image.uuid}"
 
-            self.face_proc.face_recognition(img, output_image)
+            faces_detected = self.face_proc.face_recognition(img, output_image)
+            if faces_detected:
 
-            r.save_file_content(output_image.uuid, output_image.buffer)
-            r.save(output_image)
+                r.save_file_content(output_image.uuid, output_image.buffer)
+                r.save(output_image)
 
-            await self.pubsub_mngr.publish(PubSubChannel.img_channel, output_image.url)
-
+                await self.pubsub_mngr.publish(PubSubChannel.img_channel, output_image.url)
+            else:
+                logging.warning(f"Could not detect faces for source image {img.uuid}")
             return img

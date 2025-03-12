@@ -6,6 +6,7 @@ from starlette.responses import StreamingResponse
 
 from app.adapters.api.models import ImageResponse
 from app.adapters.repo.img import LocalDiskImageRepo
+from app.business_logic.face_processor import InvalidFile
 from app.business_logic.models import Image
 from app.core.factory import AppFactory
 import magic
@@ -30,7 +31,13 @@ async def post_image(file: UploadFile = File(...)) -> ImageResponse:
         buffer=buffer,
     )
     cmd = AppFactory.get_process_image_cmd()
-    image = await cmd.execute(image)
+    try:
+        image = await cmd.execute(image)
+    except InvalidFile as e:
+        raise HTTPException(
+            status_code=422,
+            detail={"file": f'File corrupted, cannot process it'},
+        )
     return ImageResponse(**image.model_dump())
 
 
