@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    image: facerec:latest
+    container_name: facerec
+    ports:
+      - "8080:8282"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - IMG_DIR=/images
+      - API_BASE_URL=http://localhost:8080/
+    # command: ['sleep', 'infinity']
+    volumes:
+      - ./images:/images
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+

@@ -1,0 +1,9 @@
+uvicorn
+fastapi
+python-multipart
+redis
+websockets
+opencv-python-headless
+numpy
+python-magic
+asyncio
