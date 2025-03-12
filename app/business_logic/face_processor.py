@@ -8,8 +8,10 @@ haar_cascade_path = os.path.join(
     os.path.dirname(cv2.__file__), "data", "haarcascade_frontalface_default.xml"
 )
 
+
 class InvalidFile(Exception):
     pass
+
 
 class FaceProcessor:
 

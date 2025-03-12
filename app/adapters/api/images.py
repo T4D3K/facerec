@@ -33,10 +33,10 @@ async def post_image(file: UploadFile = File(...)) -> ImageResponse:
     cmd = AppFactory.get_process_image_cmd()
     try:
         image = await cmd.execute(image)
-    except InvalidFile as e:
+    except InvalidFile:
         raise HTTPException(
             status_code=422,
-            detail={"file": f'File corrupted, cannot process it'},
+            detail={"file": "File corrupted, cannot process it"},
         )
     return ImageResponse(**image.model_dump())
 

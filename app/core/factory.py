@@ -22,8 +22,7 @@ class AppFactory:
                 cls.pubsub = RedisPubSubManager(redis_url)
                 cls.pubsub.connect()
             return cls.pubsub
-        raise NotImplemented(f"PUB_SUB_TYPE {PUB_SUB_TYPE} not implemented")
-
+        raise NotImplementedError(f"PUB_SUB_TYPE {PUB_SUB_TYPE} not implemented")
 
     @classmethod
     def get_process_image_cmd(cls):
