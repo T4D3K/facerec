@@ -80,6 +80,7 @@ using Celery) and that job should publish message on channel, so all regiestered
 Install virtualenv + make redis running
 
 ```shell
+mkdir -p images
 make install
 make redis-up
 ```
